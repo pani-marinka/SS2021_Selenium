@@ -1,9 +1,18 @@
 package pageObjects;
 
+import org.openqa.selenium.By;
 import org.testng.Assert;
 
-public class SignInBO {
+// !!!!!!!!!!!not used :(  It's in lecture
+
+public class SignInBO extends AbstractPage{
     private SignInPage signInPage;
+
+    //location for input login
+    private By mailInput = By.id("username");
+
+    //location for input password
+    private By passwordInput = By.id("password");
 
     public SignInBO() {
         signInPage = new SignInPage();
@@ -22,5 +31,6 @@ public class SignInBO {
         Assert.assertTrue(signInPage.isLoginFailedErrorMessageDisplayed(),
                 "We can't find user with such");
     }
+
 
 }

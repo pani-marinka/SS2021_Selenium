@@ -1,6 +1,7 @@
 package pageObjects;
 
 import driver.DriverFactory;
+import enums.DriverConfigs;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -8,7 +9,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 public class AbstractPage {
-    private static WebDriverWait wait = new WebDriverWait(DriverFactory.getWebDriver(), 20); // constant?
+    // Work  page with setting WebInterface
+    /*
+    implementation of the initial setup for interaction with page elements
+     */
+    private final WebDriverWait wait = new WebDriverWait(
+            DriverFactory.getWebDriver(),
+            Long.parseLong(DriverConfigs.DRIVERDELAYEXECUTION.getValue()));
 
     public AbstractPage() {
     }
@@ -24,12 +31,19 @@ public class AbstractPage {
         }
     }
 
+
+    // url for our site
     void proceedToPage(final String url) {
         DriverFactory.getWebDriver().get(url);
     }
 
     WebElement getElement(By locator) {
         WebElement webElement = wait.until(ExpectedConditions.visibilityOfElementLocated((By) locator));
+        return webElement;
+    }
+
+    WebElement getElementWithoutVisibility(By locator) {
+        WebElement webElement = DriverFactory.getWebDriver().findElement(locator);
         return webElement;
     }
 

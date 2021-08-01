@@ -7,88 +7,93 @@ import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
 public class SignInPage extends AbstractPage {
-    //private By sighInButton = By.xpath("//p[@class = 'header-auth__signin']//span ");
+    //button for sighIn from HomePage
     private By signInButton = By.className("popup-reg-sign-in-form__sign_in");
 
 
+    //  button Continue after login
     private By sighInContinue = By.id("kc-login-next");
-    private By signInButtonOnPasswordWindow = By.id("kc-login");
-    /*
-     private WebElement continueButton = driver.findElement(By.id("kc-login-next"));
-     */
-    private By loginFailedErrorMessage = By.xpath("//span[contains(@class,'error-text')]");
-  //  private By loginFailedErrorMessage = By.xpath("//div[text() = 'We can't find user with such']");
-    //By.xpath("//span[contains(@class,'error-text')]");
-    //.xpath("//div[text() = 'We can't find user with such']");
-//boolean checkMessage = driver.getPageSource().contains("We can't find user");// We can't find user with such credentials.
-//        Assert.assertTrue(checkMessage, "NOT found!");
 
+    //  button Continue after password
+    private By signInButtonOnPasswordWindow = By.id("kc-login");
+
+    // Find Error after Incorrect password
+    private By loginFailedErrorMessage = By.xpath("//span[contains(@class,'error-text')]");
+
+
+    //location for input login
     private By mailInput = By.id("username");
+
+    //location for input password
     private By passwordInput = By.id("password");
 
+    //$x("//button[@disabled and contains(@id,'kc-login-next')]")
+    //location for Continue disabled
+    private By buttonContinueDisabled = By.xpath("//button[@disabled and contains(@id,'kc-login-next')]");
 
-    /*
-     WebElement signInButton = driver.findElement(By.className("header-auth__signin"));
-        signInButton.click();
-        WebElement mailInput = driver.findElement(By.id("username"));
-        mailInput.sendKeys("testepammail@ukr.net");
-        WebElement continueButton = driver.findElement(By.id("kc-login-next"));
-        continueButton.click();
-        WebElement passwordInput = driver.findElement(By.id("password"));
-     */
-
-    AbstractPage abstractPage = new AbstractPage();
-
+    //input email
     public SignInPage enterEmail(String email) {
-
-//        WebElement mailInput = DriverFactory.getWebDriver().findElement(By.id("username"));
-//        mailInput.sendKeys(email);
-
+        getElement(mailInput).clear();
         getElement(mailInput).sendKeys(email);
         return this;
     }
 
+    //input password
     public SignInPage enterPassword(String password) {
         getElement(passwordInput).sendKeys(password);
-        return this;
+        return new SignInPage();
     }
 
+    //True, if Error Message after incorrect password
     public boolean isLoginFailedErrorMessageDisplayed() {
-
         return getElement(loginFailedErrorMessage).isDisplayed();
     }
 
-//    public boolean isLoginFailedErrorMessageDisplayed() {
-//        boolean isDisplayed = isDisplayed(loginFailedErrorMessage);
-//        return isDisplayed;
-//    }
-
-    /*
-    public boolean getLoggedInUserName() {
-      //  return getElement(topRightCornerUserNameElement).getText();
-        return getElement(topRightCornerUserNameElement).isDisplayed();
-     */
 
 
-    public HomePage clickSignInButton() {
-        getElement(signInButton).click();
-        return new HomePage();
-    }
-
+    //click after password
     public SignInPage clickSignInButtonOnPassword() {
         getElement(signInButtonOnPasswordWindow).click();
         return this;
     }
 
-    public SignInPage clickSignInContinue() { // its mine
+    //click after login
+    public SignInPage clickSignInContinue() {
         getElement(sighInContinue).click();
         return this;
     }
 
+    //bottom after Continue is Visible
+    public boolean clickVisibleInContinue() {
+        return getElement(sighInContinue).isDisplayed();
+    }
+
+    //True, if Continue Visible
+    public void verifyContinueDisplayed() {
+        Assert.assertTrue(clickVisibleInContinue(),
+                "We can click");
+    }
+
+    //True, if Error Message after incorrect password
     public void verifyFailedLoginErrorMessageDisplayed() {
         Assert.assertTrue(isLoginFailedErrorMessageDisplayed(),
                 "We can't find user with such");
     }
 
+    //True, if Continue disabled
+    public void verifyAssertClickContinueDisabled() {
+        Assert.assertTrue(clickSignInContinueDisable(), "We can't click.It's good!");
+          }
+
+
+    //True, if Continue disabled
+    public boolean clickSignInContinueDisable() {
+        try {
+            boolean test = getElementWithoutVisibility(buttonContinueDisabled).isDisplayed();
+            return true;
+        } catch (org.openqa.selenium.NoSuchElementException e) {
+            return false;
+        }
+    }
 
 }

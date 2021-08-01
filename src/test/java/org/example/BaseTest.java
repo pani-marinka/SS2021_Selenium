@@ -10,7 +10,7 @@ public class BaseTest extends DriverFactory {
     private Test test;
 
     @Parameters({"browserName"})
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void beforeMethod(@Optional(value = "webdriver.chrome.driver") final String browserName, Method method) {  //only constants NOT DriverConfigs.CHROMENAME.getValue()
         initDriver(browserName);
     }

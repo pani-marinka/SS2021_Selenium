@@ -7,6 +7,7 @@ public enum DriverConfigs {
     FIREFOXNAME("webdriver.gecko.driver"),
     EDGENAME("webdriver.edge.driver"),
 
+    DRIVERDELAYEXECUTION("30"),
     CHROMELOCATION("C:/Users/Maryna/Downloads/chromedriver.exe"),
     FIREFOXLOCATION("FAILED"),
     EDGELOCATION("NOT_FOUND");

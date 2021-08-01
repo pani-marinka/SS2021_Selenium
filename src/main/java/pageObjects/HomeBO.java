@@ -14,14 +14,11 @@ public class HomeBO {
         return this;
     }
 
-    public SignInBO clickSignInButton() {
+    public HomeBO clickSignInButton() {
         homePage.clickSignInButton();
-        return new SignInBO();
+        return this;
     }
 
-    public void verifyUserIsLoggedIn() {
-        Assert.assertTrue(homePage.isUserNameDisplayed(),"User is not logged in");
-    }
 
     public void verifyRightUserNameIsDisplayed(String expectedUserName) {
      //   Assert.assertEquals(homePage.getLoggedInUserName(), expectedUserName);

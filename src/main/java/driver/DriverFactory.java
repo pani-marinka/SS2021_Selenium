@@ -19,8 +19,10 @@ public abstract class DriverFactory {
             System.setProperty(DriverConfigs.CHROMENAME.getValue(), DriverConfigs.CHROMELOCATION.getValue());
             webDriver = new ChromeDriver();
             webDriver.manage().window().maximize();
-            //задержка на выполнение теста = 10 сек.
-            webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);  //constnts
+            //delay for test execution = 10 si.
+            webDriver.manage().timeouts().implicitlyWait(
+                    Long.parseLong(DriverConfigs.DRIVERDELAYEXECUTION.getValue()),
+                    TimeUnit.SECONDS);
 
         }
     }
