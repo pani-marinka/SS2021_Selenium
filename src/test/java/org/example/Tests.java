@@ -1,4 +1,5 @@
 package org.example;
+import driver.DriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -6,6 +7,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Tests {
@@ -28,6 +31,22 @@ public class Tests {
         passwordInput.sendKeys("Testepam123");
         WebElement signInButtonOnPasswordWindow = driver.findElement(By.id("kc-login"));
         signInButtonOnPasswordWindow.click();
+//
+//        driver.switchTo().frame(driver.findElement(By.id("frameId")));
+////do your stuff
+//        driver.switchTo().defaultContent();
+        //(“a.topNavItem.training”)
+        List<WebElement> getElements2 = Collections.singletonList(driver.findElement(By.cssSelector("a.topNavItem.training")));
+     getElements2.get(0).click();
+
+//        WebElement hrefTraining = driver.findElement(By.xpath("//body/div/header/div/div/nav/ul/li/a[contains(@class,'topNavItem training click hover activeItem')]"));
+//        hrefTraining.click();
+/*
+<a href="/#!/TrainingList" class="topNavItem training click hover activeItem" route-link-active="">Training list</a>
+ */
+
+        //
+
 
         WebElement userName = driver.findElement(By.className("user-info__name"));
         Assert.assertTrue(userName.isDisplayed(), "Username is NOT displayed");
@@ -59,4 +78,8 @@ public class Tests {
 
         driver.quit();
     }
+
+//    List<WebElement> getElements (By locator) {
+//        return DriverFactory.getWebDriver().driver.findElement(By.cssSelector("a.topNavItem.training"));
+//    }
 }

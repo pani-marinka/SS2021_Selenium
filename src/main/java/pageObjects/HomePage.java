@@ -14,11 +14,22 @@ public class HomePage extends AbstractPage {
     private By topRightCornerUserNameElement = By.className("user-info__name");
 
 
+    //page TrainingList
+    //private By trainingListButton = By.className("topNavItem training click hover");
+
+    //private By buttonContinueDisabled = By.xpath("//button[@disabled and contains(@id,'kc-login-next')]");
+
     public SignInPage clickSignInButton() {
         getElement(signInButton).click();
     return new SignInPage();
-
     }
+
+
+
+
+    /*
+    <a href="/#!/TrainingList" class="topNavItem training click hover" route-link-active="">Training list</a>
+     */
 
 //    public boolean isUserNameDisplayed() {
 //        boolean isDisplayed = isDisplayed(topRightCornerUserNameElement);

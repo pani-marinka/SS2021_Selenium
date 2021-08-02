@@ -2,7 +2,7 @@ package enums;
 
 public enum BusinessConfigs {
     BASEURL("https://training.by/#!/Home?lang=en"),
-    HOMEPAGEURL("URLFAILED");
+    TRAINLISTURL("https://training.by/#!/TrainingList?lang=en");
 
 
 
