@@ -3,23 +3,28 @@ package enums;
 public enum DriverConfigs {
 
 
-    CHROMENAME("webdriver.chrome.driver"),
-    FIREFOXNAME("webdriver.gecko.driver"),
-    EDGENAME("webdriver.edge.driver"),
-
-    DRIVERDELAYEXECUTION("30"),
-    CHROMELOCATION("C:/Users/Maryna/Downloads/chromedriver.exe"),
-    FIREFOXLOCATION("FAILED"),
-    EDGELOCATION("NOT_FOUND");
+    CHROME("webdriver.chrome.driver", "C:/Users/Maryna/Downloads/chromedriver.exe"),    /*!DONE  сделать два параметра*/
+    FIREFOX("webdriver.gecko.driver", "path"),
+    EDGE("webdriver.edge.driver", "path"),
+    DRIVERDELAYEXECUTION("30", "40");
 
 
-    private DriverConfigs(String value) {
-        this.value = value;
+
+    private DriverConfigs(String value1, String value2) {
+        this.value1 = value1;
+        this.value2 = value2;
     }
 
-    private String value;
+    private String value1;
+    private String value2;
 
-    public String getValue() {
-        return value;
+
+    public String getValueName() {
+        return value1;
     }
+
+    public String getValueLocatin() {
+        return value2;
+    }
+
 }

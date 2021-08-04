@@ -3,7 +3,8 @@ package driver;
 import enums.DriverConfigs;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,24 +15,36 @@ public abstract class DriverFactory {
     /*
     initilazier web driver
      */
-    protected void initDriver(final String browesrName) {
-        if (DriverConfigs.CHROMENAME.getValue().equalsIgnoreCase(browesrName)) {
-            System.setProperty(DriverConfigs.CHROMENAME.getValue(), DriverConfigs.CHROMELOCATION.getValue());
+    //protected void initDriver(final String browesrName) {
+    public static void initDriver(final String browesrName) {
+
+        if (DriverConfigs.CHROME.getValueName().equalsIgnoreCase(browesrName)) {
+            System.setProperty(DriverConfigs.CHROME.getValueName(), DriverConfigs.CHROME.getValueLocatin());
             webDriver = new ChromeDriver();
-            webDriver.manage().window().maximize();
-            //delay for test execution = 10 si.
-            webDriver.manage().timeouts().implicitlyWait(
-                    Long.parseLong(DriverConfigs.DRIVERDELAYEXECUTION.getValue()),
-                    TimeUnit.SECONDS);
 
+        } else if (DriverConfigs.FIREFOX.getValueName().equalsIgnoreCase(browesrName)) {
+            System.setProperty(DriverConfigs.FIREFOX.getValueName(), DriverConfigs.FIREFOX.getValueLocatin());
+            webDriver = new FirefoxDriver();
+        } else if (DriverConfigs.EDGE.getValueName().equalsIgnoreCase(browesrName)) {
+            System.setProperty(DriverConfigs.EDGE.getValueName(), DriverConfigs.EDGE.getValueLocatin());
+            webDriver = new EdgeDriver();
+        } else {
+            throw new RuntimeException("Browser not found!");  // DONE! if  драйвер не пыдтримуется обробляти цей ексепшен
         }
-    }
 
+        webDriver.manage().window().maximize();
+        webDriver.manage().timeouts().implicitlyWait(
+                Long.parseLong(DriverConfigs.DRIVERDELAYEXECUTION.getValueName()),
+                TimeUnit.SECONDS);
+
+
+    }
     public static WebDriver getWebDriver() {
         return webDriver;
     }
 
-    protected void quitDriver() {
+    //protected void quitDriver() {
+    public static void quitDriver() {
         if (webDriver != null) {
             webDriver.quit();
             webDriver = null;

@@ -15,7 +15,6 @@ public class Tests {
 
     @Test(description = "Verify user is successfully logged in with appropriate credentials")
     public void verifyUserSuccessfullyLoggedIn() {
-
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\Maryna\\Downloads\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -28,28 +27,12 @@ public class Tests {
         WebElement continueButton = driver.findElement(By.id("kc-login-next"));
         continueButton.click();
         WebElement passwordInput = driver.findElement(By.id("password"));
-        passwordInput.sendKeys("Testepam123");
+        passwordInput.sendKeys("CorrectPassword");
         WebElement signInButtonOnPasswordWindow = driver.findElement(By.id("kc-login"));
         signInButtonOnPasswordWindow.click();
-//
-//        driver.switchTo().frame(driver.findElement(By.id("frameId")));
-////do your stuff
-//        driver.switchTo().defaultContent();
-        //(“a.topNavItem.training”)
-        List<WebElement> getElements2 = Collections.singletonList(driver.findElement(By.cssSelector("a.topNavItem.training")));
-     getElements2.get(0).click();
 
-//        WebElement hrefTraining = driver.findElement(By.xpath("//body/div/header/div/div/nav/ul/li/a[contains(@class,'topNavItem training click hover activeItem')]"));
-//        hrefTraining.click();
-/*
-<a href="/#!/TrainingList" class="topNavItem training click hover activeItem" route-link-active="">Training list</a>
- */
-
-        //
-
-
-        WebElement userName = driver.findElement(By.className("user-info__name"));
-        Assert.assertTrue(userName.isDisplayed(), "Username is NOT displayed");
+        boolean checkMessage = driver.getPageSource().contains("We can't find user");// We can't find user with such credentials.
+        Assert.assertTrue(checkMessage, "NOT found!");
 
         driver.quit();
     }

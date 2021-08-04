@@ -1,12 +1,17 @@
 package pageObjects;
 
-import driver.DriverFactory;
+import enums.BusinessConfigs;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
+import java.util.logging.Logger;
+
 public class SignInPage extends AbstractPage {
+
+    //DONE!  зробити логгер логувати значеня наприклад мейлу
+    private static final Logger LOG = Logger.getLogger(SignInPage.class.getName());
+
+
     //button for sighIn from HomePage
     private By signInButton = By.className("popup-reg-sign-in-form__sign_in");
 
@@ -34,21 +39,24 @@ public class SignInPage extends AbstractPage {
     //input email
     public SignInPage enterEmail(String email) {
         getElement(mailInput).clear();
+        LOG.info("Mail will be entered.");
         getElement(mailInput).sendKeys(email);
+        LOG.info(String.format("Mail %s was entered.", email));
         return this;
     }
 
     //input password
     public SignInPage enterPassword(String password) {
+        LOG.info(String.format("expected password: %s",password));
         getElement(passwordInput).sendKeys(password);
-        return new SignInPage();
+        LOG.info(String.format("Password entered!"));
+        return new SignInPage();  //this?
     }
 
     //True, if Error Message after incorrect password
     public boolean isLoginFailedErrorMessageDisplayed() {
         return getElement(loginFailedErrorMessage).isDisplayed();
     }
-
 
 
     //click after password
@@ -70,24 +78,29 @@ public class SignInPage extends AbstractPage {
 
     //True, if Continue Visible
     public void verifyContinueDisplayed() {
+        LOG.info(String.format("Continue displayed"));
         Assert.assertTrue(clickVisibleInContinue(),
                 "We can click");
     }
 
     //True, if Error Message after incorrect password
     public void verifyFailedLoginErrorMessageDisplayed() {
+        LOG.info(String.format("Login is not correct for test"));
         Assert.assertTrue(isLoginFailedErrorMessageDisplayed(),
-                "We can't find user with such");
+                "We can't find user with such credential");
+        LOG.info(String.format("Web didnt pass incorrect login!"));
     }
 
     //True, if Continue disabled
     public void verifyAssertClickContinueDisabled() {
-        Assert.assertTrue(clickSignInContinueDisable(), "We can't click.It's good!");
-          }
+        LOG.info(String.format("Continue is expected displayed"));
+        Assert.assertTrue(checkContinueDisable(), "We musn't click.It's good!");
+        LOG.info(String.format("Continue is not displayed"));
+    }
 
 
     //True, if Continue disabled
-    public boolean clickSignInContinueDisable() {
+    public boolean checkContinueDisable() {  //не вірна названа!
         try {
             boolean test = getElementWithoutVisibility(buttonContinueDisabled).isDisplayed();
             return true;
@@ -95,5 +108,16 @@ public class SignInPage extends AbstractPage {
             return false;
         }
     }
+
+    public HomePage enterEmailPasswordSignIn(String email, String password) { //  for input email/password
+
+        LOG.info("Mail was entered.");
+        enterEmail(email)
+                .clickSignInContinue()
+                .enterPassword(password)
+                .clickSignInButtonOnPassword();
+        return new HomePage(); //this?
+    }
+
 
 }

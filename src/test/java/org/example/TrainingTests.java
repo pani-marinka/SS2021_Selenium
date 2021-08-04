@@ -1,60 +1,82 @@
 package org.example;
 
-import confProperty.ConfProperties;
+import dataProviderForTests.DataProviderClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pageObjects.BlogPage;
-import pageObjects.HomeBO;
-import pageObjects.SignInPage;
-import pageObjects.TrainingListPage;
+import pageObjects.*;
 
 public class TrainingTests extends BaseTest {
-    @Test(description = "Verify ‘Trainings’ search works properly with searching in ‘Skills’: Java and Ruby")
-    public void searchTrainingJavaRuby() {
-        SignInPage signInPage = new SignInPage();
-        HomeBO homeBO = new HomeBO();
-        TrainingListPage trainingListPage = new TrainingListPage();
 
-        homeBO
-                .proceedToHomePage()
-                .clickSignInButton();
-        signInPage
-                .enterEmail(ConfProperties.getProperty("login"))
-                .clickSignInContinue()
-                .enterPassword(ConfProperties.getProperty("passwordCorrect")) //Testepam123
-                .clickSignInButtonOnPassword();
+
+    private SignInPage signInPage;
+    private TrainingListPage trainingListPage;
+    public BlogPageTest blogPage;
+    private HomePage homePage;
+
+    @BeforeClass
+    public void getСreateObj() {
+       // DONE!  один объект
+        signInPage = new SignInPage();
+        trainingListPage = new TrainingListPage(); // один объект для класса ()
+        blogPage = new BlogPageTest();
+        homePage = new HomePage();
+    }
+
+    @Test(description = "Verify ‘Trainings’ search works properly with searching in ‘Skills’: Java and Ruby",
+            dataProvider = "numberOfCourses", dataProviderClass = DataProviderClass.class)
+    public void searchTrainingJavaRuby(
+            String email, String passwordCorrect,
+            String nameOfCorses, String expectedAmount,  //Java  , Expected: "Java + Belarus == 7  or Generaly 17 + 1(without word Java)"
+            String nameOfCorses2, String expectedAmount2) //Ruby, Expected == 0
+    {
+        homePage
+                .getUrlHomeClickSignIn()
+                .enterEmailPasswordSignIn(email, passwordCorrect);
         trainingListPage
-                .clickTrainingListButton()        //.proceedToTrainingPage()
+                .clickTrainingListButton()
+                .clickClearLocation()
                 .clickSearchButton()
                 .clickBySkills()
-                .clickBycheckJava()
-                .verifyAmountCoursesJavaDisplayed();
-        trainingListPage
-                .clickBycheckJava()
-                .clickBycheckRuby()
-                .verifyAmountCoursesRubyDisplayed();
-
+                .clickByCheckGeneralCourses(nameOfCorses)
+                .clickSearchButton()
+                .verifyAmountCoursesGeneralDisplayed(nameOfCorses, Integer.valueOf(expectedAmount))    //DONE!  вертати trainingPage
+                .clickSearchButton()
+                .clickByCheckGeneralCourses(nameOfCorses)
+                .clickByCheckGeneralCourses(nameOfCorses2)
+                .verifyAmountCoursesGeneralDisplayed(nameOfCorses2, Integer.valueOf(expectedAmount2));
     }
 
 
-    @Test(description = "Verify links on BlogPage")
-    public void checkLinksBlog() {
-        SignInPage signInPage = new SignInPage();
-        BlogPage blogPage = new BlogPage();
-        TrainingListPage trainingListPage = new TrainingListPage();
+    @Test(description = "Verify links on BlogPage",
+            dataProvider = "loginPasswordCorrect", dataProviderClass = DataProviderClass.class)
+    public void checkLinksBlog(String email, String passwordCorrect) {
 
         trainingListPage
-                .proceedToTrainingPage()
-                .clickSignInButton();
+                .getUrlTrainingSignIn();
         signInPage
-                .enterEmail(ConfProperties.getProperty("login"))
-                .clickSignInContinue()
-                .enterPassword(ConfProperties.getProperty("passwordCorrect")) //Testepam123
-                .clickSignInButtonOnPassword();
+                .enterEmailPasswordSignIn(email, passwordCorrect);
         blogPage
-                .clickBlogListButton()        //
-                .verifylistLinksDisplayed(); //check links displayed
+                .clickBlogListButton()
+                .verifyListLinksDisplayed(6); //expected links displayed 6
+    }
 
-
+    @Test(description = "Verify ‘Trainings’ search works properly with searching in ‘Location’: Lviv : only Ukraine and MultiLocation",
+            dataProvider = "loginPasswordCorrect", dataProviderClass = DataProviderClass.class)
+    public void checkLocation(String email, String passwordCorrect) {
+        trainingListPage
+                .getUrlTrainingSignIn();
+        signInPage
+                .enterEmailPasswordSignIn(email, passwordCorrect);
+        trainingListPage
+                .clickTrainingListButton()
+                .clickClearLocation()
+                .clickSearchButton()
+                .clickByLocation()
+                .clickLocationUkraine()
+                .clickBycheckLviv()
+                .verifyAllCoursesLocationDisplayed(9) //general courses Ukr,Multi exppected 9
+                .verifyAmountCoursesLocationDisplayed("Ukraine", 8) //check me for places search cities
+                .verifyAmountCoursesLocationDisplayed("Lviv", 0); // check for scenario
     }
 
 }

@@ -15,7 +15,7 @@ public class AbstractPage {
      */
     private final WebDriverWait wait = new WebDriverWait(
             DriverFactory.getWebDriver(),
-            Long.parseLong(DriverConfigs.DRIVERDELAYEXECUTION.getValue()));
+            Long.parseLong(DriverConfigs.DRIVERDELAYEXECUTION.getValueName()));
 
     public AbstractPage() {
     }

@@ -1,22 +1,29 @@
 package org.example;
 
-import driver.DriverFactory;
-import enums.DriverConfigs;
 import org.testng.annotations.*;
 
 import java.lang.reflect.Method;
 
-public class BaseTest extends DriverFactory {
+import static driver.DriverFactory.initDriver;
+import static driver.DriverFactory.quitDriver;
+
+//public abstract class BaseTest extends DriverFactory { //DONE!
+
+
+public abstract class BaseTest {
     private Test test;
 
     @Parameters({"browserName"})
-    @BeforeMethod(alwaysRun = true)
-    public void beforeMethod(@Optional(value = "webdriver.chrome.driver") final String browserName, Method method) {  //only constants NOT DriverConfigs.CHROMENAME.getValue()
+   //@BeforeMethod(alwaysRun = true)
+    @BeforeClass(alwaysRun = true)
+    public void beforeMethod(@Optional(value = "webdriver.chrome.driver") final String browserName, Method method) {  //only constants NOT DriverConfigs.CHROME.getValueName()
+
         initDriver(browserName);
     }
 
-    @AfterMethod(alwaysRun = true)
-    public void afterMethod(final Method method) {
+     //  @AfterMethod(alwaysRun = true) public void afterMethod(Method method) {
+    @AfterClass(alwaysRun = true)
+    public void afterMethod() {
         quitDriver();
     }
 }

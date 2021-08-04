@@ -1,120 +1,75 @@
 package org.example;
 
-import confProperty.ConfProperties;
+import dataProviderForTests.DataProviderClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import pageObjects.HomeBO;
+import pageObjects.HomePage;
 import pageObjects.SignInPage;
+
 
 public class SignInPageTest extends BaseTest {
 
-    @Test(description = "verify  user is successfully appropriate credentials")
-    public void verifyUserisSuccessfullyLoggedIn() {
-        SignInPage signInPage = new SignInPage();
-        HomeBO homeBO = new HomeBO();
 
-        homeBO
-                .proceedToHomePage()
-                .clickSignInButton();
-        signInPage
-                .enterEmail(ConfProperties.getProperty("login"))
-                .clickSignInContinue()
-                .enterPassword(ConfProperties.getProperty("passwordCorrect")) //Testepam123
-                .clickSignInButtonOnPassword();
-        homeBO
-                .verifyRightUserNameIsDisplayed("testepammail");//Марина testepammail
+    private HomePage homePage;
+    private SignInPage signInPage;
+
+    @BeforeClass
+    public void getСreateObj() {
+        homePage = new HomePage();// DONE!  один объект
+        signInPage = new SignInPage();
     }
 
-    @Test(description = "verify Error Message Appears when user logging in with inappropriate credentials")
-    public void verifyErrorMessageAppearsForIncorrectUser() {
-        SignInPage signInPage = new SignInPage();
-        HomeBO homeBO = new HomeBO();
+    @Test(description = "verify  user is successfully appropriate credentials",
+            dataProvider = "loginPasswordCorrect", dataProviderClass = DataProviderClass.class)
+    public void verifyUserisSuccessfullyLoggedIn(String email, String passwordCorrect) {
+        homePage
+                .getUrlHomeClickSignIn()
+                .enterEmailPasswordSignIn(email, passwordCorrect)// !DONE One method active Email,password
+                .verifyRightUserNameIsDisplayed("testepammail");
+    }
 
-        homeBO
-                .proceedToHomePage()
-                .clickSignInButton();
+    @Test(description = "verify Error Message Appears when user loggingin with inappropriate credentials",
+            dataProvider = "loginPasswordIncorrect", dataProviderClass = DataProviderClass.class)
+    public void verifyErrorMessageAppearsForIncorrectUser(String email, String passwordIncorrect) {
+
+        homePage
+                .getUrlHomeClickSignIn()
+                .enterEmailPasswordSignIn(email, passwordIncorrect);
         signInPage
-                .enterEmail(ConfProperties.getProperty("login"))
-                .clickSignInContinue()
-                .enterPassword(ConfProperties.getProperty("passwordInCorrect"))
-                .clickSignInButtonOnPassword()
                 .verifyFailedLoginErrorMessageDisplayed();
     }
 
-    @Test(description = "verify boundary login with 10 symbols after @Dot is successfully appropriate credentials")
-    public void verifyCorrectEmailBoundary10() {
-        SignInPage signInPage = new SignInPage();
-        HomeBO homeBO = new HomeBO();
-
-        homeBO
-                .proceedToHomePage()
-                .clickSignInButton();
-        signInPage
-                .enterEmail(ConfProperties.getProperty("loginPositiveBoundaryTest10After@Dot"))
+    @Test(description = "verify boundary login with 10 symbols after @Dot is successfully appropriate credentials",
+            dataProvider = "loginBoundaryCorrectData", dataProviderClass = DataProviderClass.class)
+    public void verifyCorrectEmailBoundary10(String email) {
+        homePage
+                .getUrlHomeClickSignIn()
+                .enterEmail(email)
                 .verifyContinueDisplayed();
     }
 
 
     //for test Example HardTest
-    @Test(description = "entered mail matches without criteria and disable bottom continue")
-    public void notVerifyIncorrectMailUser() {
-        SignInPage signInPage = new SignInPage();
-        HomeBO homeBO = new HomeBO();
-        homeBO
-                .proceedToHomePage()
-                .clickSignInButton();
-        signInPage
-                .enterEmail(ConfProperties.getProperty("loginWithout@"))
-                .verifyAssertClickContinueDisabled();
-        signInPage
-                .enterEmail(ConfProperties.getProperty("loginBegin@"))
-                .verifyAssertClickContinueDisabled();
-        signInPage
-                .enterEmail(ConfProperties.getProperty("loginWithoutDot"))
-                .verifyAssertClickContinueDisabled();
-        signInPage
-                //.enterEmail(ConfProperties.getProperty("login")) // test for HARDSOFT
-                 .enterEmail(ConfProperties.getProperty("login11After"))//("testepammail@ukr.netnetnetne")  //
+    @Test(description = "entered mail matches without criteria and disable bottom continue",
+            dataProvider = "loginData", dataProviderClass = DataProviderClass.class)
+    public void notVerifyIncorrectMailUser(String data) {
+
+        homePage
+                .getUrlHomeClickSignIn()
+                .enterEmail(data)
                 .verifyAssertClickContinueDisabled();
     }
 
     //exampleSoftAssert
-    @Test(description = "entered mail matches without criteria and disable bottom continue")
-    public void notVerifyIncorrectMailUserSoft() {
-        SignInPage signInPage = new SignInPage();
-        HomeBO homeBO = new HomeBO();
+    @Test(description = "entered mail matches without criteria and disable bottom continue",
+            dataProvider = "loginData", dataProviderClass = DataProviderClass.class)
+    public void notVerifyIncorrectMailUserSoft(String email) {
         SoftAssert soft = new SoftAssert();
-        homeBO
-                .proceedToHomePage()
-                .clickSignInButton();
-
-        boolean Test = signInPage
-                .enterEmail(ConfProperties.getProperty("loginWithout@"))
-                .clickSignInContinueDisable();
-        soft.assertTrue(Test,
-                "We musn't click loginWithout@!");
-
-        // .verifyAsserClickContinueDisabled();
-        soft.assertTrue(signInPage
-                        .enterEmail(ConfProperties.getProperty("loginBegin@"))
-                        .clickSignInContinueDisable(),
-                "We musn't click loginBegin@!");
-        soft.assertTrue(signInPage
-                        .enterEmail(ConfProperties.getProperty("login11After"))
-                        .clickSignInContinueDisable(),
-                "We musn't click login11After!");
-
-        soft.assertTrue(signInPage
-                        .enterEmail(ConfProperties.getProperty("login"))  // .enterEmail(ConfProperties.getProperty("loginWithoutDot"))
-                        .clickSignInContinueDisable(),
-                "ITS TEST login for Log!");
-        soft.assertTrue(signInPage
-                        .enterEmail(ConfProperties.getProperty("loginWithoutDot"))
-                        .clickSignInContinueDisable(),
-                "We musn't click loginWithoutDot!");
+        homePage
+                .getUrlHomeClickSignIn();
+        soft.assertTrue(signInPage.enterEmail(email).checkContinueDisable(),
+                "We musn't click!");
         soft.assertAll();
     }
-
-
-
 }
