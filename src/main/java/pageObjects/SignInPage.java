@@ -3,36 +3,29 @@ package pageObjects;
 import enums.BusinessConfigs;
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
+
+import static org.testng.Assert.assertTrue;
 
 public class SignInPage extends AbstractPage {
 
     //DONE!  зробити логгер логувати значеня наприклад мейлу
     private static final Logger LOG = Logger.getLogger(SignInPage.class.getName());
-
-
     //button for sighIn from HomePage
     private By signInButton = By.className("popup-reg-sign-in-form__sign_in");
-
-
     //  button Continue after login
     private By sighInContinue = By.id("kc-login-next");
-
     //  button Continue after password
     private By signInButtonOnPasswordWindow = By.id("kc-login");
-
     // Find Error after Incorrect password
     private By loginFailedErrorMessage = By.xpath("//span[contains(@class,'error-text')]");
-
-
     //location for input login
     private By mailInput = By.id("username");
-
     //location for input password
     private By passwordInput = By.id("password");
-
-    //$x("//button[@disabled and contains(@id,'kc-login-next')]")
     //location for Continue disabled
     private By buttonContinueDisabled = By.xpath("//button[@disabled and contains(@id,'kc-login-next')]");
 
@@ -47,7 +40,7 @@ public class SignInPage extends AbstractPage {
 
     //input password
     public SignInPage enterPassword(String password) {
-        LOG.info(String.format("expected password: %s",password));
+        LOG.info(String.format("expected password: %s", password));
         getElement(passwordInput).sendKeys(password);
         LOG.info(String.format("Password entered!"));
         return new SignInPage();  //this?
@@ -79,14 +72,14 @@ public class SignInPage extends AbstractPage {
     //True, if Continue Visible
     public void verifyContinueDisplayed() {
         LOG.info(String.format("Continue displayed"));
-        Assert.assertTrue(clickVisibleInContinue(),
+        assertTrue(clickVisibleInContinue(),
                 "We can click");
     }
 
     //True, if Error Message after incorrect password
     public void verifyFailedLoginErrorMessageDisplayed() {
         LOG.info(String.format("Login is not correct for test"));
-        Assert.assertTrue(isLoginFailedErrorMessageDisplayed(),
+        assertTrue(isLoginFailedErrorMessageDisplayed(),
                 "We can't find user with such credential");
         LOG.info(String.format("Web didnt pass incorrect login!"));
     }
@@ -94,22 +87,13 @@ public class SignInPage extends AbstractPage {
     //True, if Continue disabled
     public void verifyAssertClickContinueDisabled() {
         LOG.info(String.format("Continue is expected displayed"));
-        Assert.assertTrue(checkContinueDisable(), "We musn't click.It's good!");
+        assertTrue(isDisplayed(buttonContinueDisabled), "We musn't click.It's good!");
         LOG.info(String.format("Continue is not displayed"));
     }
 
 
-    //True, if Continue disabled
-    public boolean checkContinueDisable() {  //не вірна названа!
-        try {
-            boolean test = getElementWithoutVisibility(buttonContinueDisabled).isDisplayed();
-            return true;
-        } catch (org.openqa.selenium.NoSuchElementException e) {
-            return false;
-        }
-    }
 
-    public HomePage enterEmailPasswordSignIn(String email, String password) { //  for input email/password
+    public HomePage SignIn(String email, String password) { //  for input email/password
 
         LOG.info("Mail was entered.");
         enterEmail(email)
@@ -119,5 +103,37 @@ public class SignInPage extends AbstractPage {
         return new HomePage(); //this?
     }
 
+
+    public void verifySoftAssertContinueDisabled() {
+        ArrayList<String> listLogin = new ArrayList<>();
+        listLogin.add(BusinessConfigs.INCORRECTLOGIN1.getValue());
+        listLogin.add(BusinessConfigs.INCORRECTLOGIN2.getValue());
+        listLogin.add(BusinessConfigs.INCORRECTLOGIN3.getValue());
+        //listLogin.add(BusinessConfigs.CORRECTLOGIN.getValue()); //There is faild! for ShowTest
+        listLogin.add(BusinessConfigs.INCORRECTLOGIN4.getValue());
+        SoftAssert soft = new SoftAssert(); //DONE! внутри верифая делать софт ассерт
+        for (String email : listLogin) {
+            LOG.info(String.format("Mail %s expected", email));
+            enterEmail(email);
+            soft.assertTrue(isDisplayed(buttonContinueDisabled), "We musn't click!");
+            LOG.info("Button is not active");
+        }
+        soft.assertAll();
+    }
+
+    public void verifyHardAssertContinueDisabled() {
+        ArrayList<String> listLogin = new ArrayList<>();
+        listLogin.add(BusinessConfigs.INCORRECTLOGIN1.getValue());
+        listLogin.add(BusinessConfigs.INCORRECTLOGIN2.getValue());
+        listLogin.add(BusinessConfigs.INCORRECTLOGIN3.getValue());
+        //listLogin.add(BusinessConfigs.CORRECTLOGIN.getValue()); //There is faild! for ShowTest
+        listLogin.add(BusinessConfigs.INCORRECTLOGIN4.getValue());
+        for (String email : listLogin) {
+            LOG.info(String.format("Mail %s expected", email));
+            enterEmail(email);
+            assertTrue(isDisplayed(buttonContinueDisabled), "We musn't click!");
+            LOG.info("Button is not active");
+        }
+    }
 
 }

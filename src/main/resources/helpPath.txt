@@ -1,0 +1,57 @@
+It' mine%)
+/search link BLOG
+    private By blogListButton = By.cssSelector("a.topNavItem.news");
+
+    //$x("//header/div/div/nav/ul/li/a[contains(@class,'topNavItem news')]")
+
+     //get Links:  News   REAL STORIES MATERIALS HARD SKILLS  SOFT SKILLS EVENTS
+        private By listLinks = By.cssSelector("a.tab-nav__item.ng-scope");
+
+
+
+    //$x("//a/span[contains(text(),'NEWS')]") -- blogNews
+    public By linkFromBlog(String nameLink) {
+      //  return By.xpath("//a/span[contains(text(),'" + nameLink + "')]/parent::a");
+        return By.xpath("//span[@class='ng-binding' and contains(text(),'REAL STORIES')]");
+    }
+
+
+
+    //page TrainingList
+    //private By trainingListButton = By.className("topNavItem training click hover");
+
+    //private By buttonContinueDisabled = By.xpath("//button[@disabled and contains(@id,'kc-login-next')]");
+
+    //$x("//button[@disabled and contains(@id,'kc-login-next')]")
+    //location for Continue disabled
+
+
+
+    //field By Locations Ukraine
+    //private By byLocationUkraine = By.cssSelector("div.location__not-active-label.location__location-active-label-country");
+
+    /*
+        //span[@ng-click='clearAllLocations(totalLocationList)']
+         */
+  //amount Java courses with word Java
+    //  private By amountJava = By.xpath("//div[@class='training-list__container training-list__desktop']//div[contains(text(), 'Java')]");
+
+    //amount Courses General //Java, Ruby
+    public By byJavaRubyCourses(String courseName) {
+        //return By.xpath("//div[@class='training-list__container training-list__desktop']/div[contains(text(), '" + courseName + "')]");
+        return By.xpath("//div[@class='training-list__container training-list__desktop']//div[contains(text(), '" + courseName + "')]");
+        //$x("//div[@class='training-list__container training-list__desktop']//div[@class='training-item__title ng-binding']")
+    }
+
+    //search  for Location Ukr, Lviv
+    public By byAmountCoursesLocation(String search) {
+        return By.xpath("//div[contains(@class,'training-list__container')]/div/a/div/div/span[contains(text(),'" + search + "')]");
+        // return By.xpath("//div[@class='training-list__container']/div/a/div[contains(@class,'training-item__header')]/following-sibling::div/div/span[contains(text(),'"+search+"')]");
+    }
+ //TainingList after Login
+    private By trainingListButton = By.cssSelector("a.topNavItem.training");
+    //  private By trainingListButton = By.xpath("nav[@class='main-nav']//a[@class='topNavItem training click hover']");
+    // private By trainingListButton = By.xpath("//a[contains(@class,'topNavItem training click hover activeItem')]");
+  //!DONE  Assert.assertEquals(amountGeneralCourses(byAmountCourses(courseName)));  // java + intership! //Ruby error message //в одному методі
+
+      //"//label[normalize-space()='Java']/span"

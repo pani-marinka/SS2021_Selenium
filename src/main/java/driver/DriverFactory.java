@@ -39,7 +39,9 @@ public abstract class DriverFactory {
 
 
     }
+
     public static WebDriver getWebDriver() {
+     //if (webDriver== null) ?
         return webDriver;
     }
 

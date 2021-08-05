@@ -20,7 +20,7 @@ public class AbstractPage {
     public AbstractPage() {
     }
 
-    public boolean isDisplayed(By locator){
+    public boolean isDisplayed(By locator){  // перероби для використання
         try{
            return DriverFactory
            .getWebDriver()
@@ -42,10 +42,6 @@ public class AbstractPage {
         return webElement;
     }
 
-    WebElement getElementWithoutVisibility(By locator) {
-        WebElement webElement = DriverFactory.getWebDriver().findElement(locator);
-        return webElement;
-    }
 
     List<WebElement> getElements (By locator) {
         return DriverFactory.getWebDriver().findElements(locator);

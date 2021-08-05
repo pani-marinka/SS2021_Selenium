@@ -1,8 +1,11 @@
 package org.example;
 
+import confProperty.ConfProperties;
 import dataProviderForTests.DataProviderClass;
+import enums.BusinessConfigs;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import pageObjects.*;
 
 public class TrainingTests extends BaseTest {
@@ -10,63 +13,79 @@ public class TrainingTests extends BaseTest {
 
     private SignInPage signInPage;
     private TrainingListPage trainingListPage;
-    public BlogPageTest blogPage;
+    public BlogPage blogPage;
     private HomePage homePage;
 
     @BeforeClass
     public void getСreateObj() {
-       // DONE!  один объект
+        // DONE!  один объект for class
         signInPage = new SignInPage();
-        trainingListPage = new TrainingListPage(); // один объект для класса ()
-        blogPage = new BlogPageTest();
+        trainingListPage = new TrainingListPage();
+        blogPage = new BlogPage();
         homePage = new HomePage();
     }
 
     @Test(description = "Verify ‘Trainings’ search works properly with searching in ‘Skills’: Java and Ruby",
             dataProvider = "numberOfCourses", dataProviderClass = DataProviderClass.class)
-    public void searchTrainingJavaRuby(
-            String email, String passwordCorrect,
-            String nameOfCorses, String expectedAmount,  //Java  , Expected: "Java + Belarus == 7  or Generaly 17 + 1(without word Java)"
-            String nameOfCorses2, String expectedAmount2) //Ruby, Expected == 0
-    {
+    public void searchTrainingJavaRuby(String NameOfJava , String NameOfRuby) {
         homePage
-                .getUrlHomeClickSignIn()
-                .enterEmailPasswordSignIn(email, passwordCorrect);
+                .proceedToHomePage()
+                .clickSignInButton()
+                .SignIn(ConfProperties.getProperty("login"), ConfProperties.getProperty("passwordCorrect")); //DONE! -- логин та пароль в conf.propetis
         trainingListPage
                 .clickTrainingListButton()
-                .clickClearLocation()
+                .clickClearLocation() //if visibility for me
                 .clickSearchButton()
                 .clickBySkills()
-                .clickByCheckGeneralCourses(nameOfCorses)
+                .clickByCheckGeneralCourses(NameOfJava)
                 .clickSearchButton()
-                .verifyAmountCoursesGeneralDisplayed(nameOfCorses, Integer.valueOf(expectedAmount))    //DONE!  вертати trainingPage
+                .verifyCoursesJavaRuby(NameOfJava)   //DONE!  вертати trainingPage //
                 .clickSearchButton()
-                .clickByCheckGeneralCourses(nameOfCorses)
-                .clickByCheckGeneralCourses(nameOfCorses2)
-                .verifyAmountCoursesGeneralDisplayed(nameOfCorses2, Integer.valueOf(expectedAmount2));
+                .clickByCheckGeneralCourses(NameOfRuby);
     }
 
 
-    @Test(description = "Verify links on BlogPage",
-            dataProvider = "loginPasswordCorrect", dataProviderClass = DataProviderClass.class)
-    public void checkLinksBlog(String email, String passwordCorrect) {
 
+    //for example DataProvider
+    @Test(description = "Verify links on BlogPage",
+            dataProvider = "linksFromBlog", dataProviderClass = DataProviderClass.class)
+    public void checkLinksBlog(String data) {
         trainingListPage
-                .getUrlTrainingSignIn();
+                .proceedToTrainingPage()
+                .clickSignInButton();
         signInPage
-                .enterEmailPasswordSignIn(email, passwordCorrect);
+                .SignIn(ConfProperties.getProperty("login"), ConfProperties.getProperty("passwordCorrect"));
         blogPage
                 .clickBlogListButton()
-                .verifyListLinksDisplayed(6); //expected links displayed 6
+                .verifyListLinksDisplayed(data);
     }
 
-    @Test(description = "Verify ‘Trainings’ search works properly with searching in ‘Location’: Lviv : only Ukraine and MultiLocation",
-            dataProvider = "loginPasswordCorrect", dataProviderClass = DataProviderClass.class)
-    public void checkLocation(String email, String passwordCorrect) {
+    //for example Enum
+    @Test(description = "Verify links on BlogPage2")
+    public void checkLinksBlog2() {
         trainingListPage
-                .getUrlTrainingSignIn();
+                .proceedToTrainingPage()
+                .clickSignInButton();
         signInPage
-                .enterEmailPasswordSignIn(email, passwordCorrect);
+                .SignIn(ConfProperties.getProperty("login"), ConfProperties.getProperty("passwordCorrect"));
+        blogPage
+                .clickBlogListButton()
+                .verifyListLinksDisplayed(BusinessConfigs.NEWS.getValue())
+                .verifyListLinksDisplayed(BusinessConfigs.REALSTORIES.getValue())
+                .verifyListLinksDisplayed(BusinessConfigs.MATERIALS.getValue())
+                .verifyListLinksDisplayed(BusinessConfigs.HARDSKILLS.getValue())
+                .verifyListLinksDisplayed(BusinessConfigs.SOFTSKILLS.getValue())
+                .verifyListLinksDisplayed(BusinessConfigs.EVENTS.getValue());
+
+    }
+
+    @Test(description = "Verify ‘Trainings’ search works properly with searching in ‘Location’: Lviv : only Ukraine and MultiLocation")
+    public void checkLocation() {
+        trainingListPage
+                .proceedToTrainingPage()
+                .clickSignInButton();
+        signInPage
+                .SignIn(ConfProperties.getProperty("login"), ConfProperties.getProperty("passwordCorrect"));
         trainingListPage
                 .clickTrainingListButton()
                 .clickClearLocation()
@@ -74,9 +93,9 @@ public class TrainingTests extends BaseTest {
                 .clickByLocation()
                 .clickLocationUkraine()
                 .clickBycheckLviv()
-                .verifyAllCoursesLocationDisplayed(9) //general courses Ukr,Multi exppected 9
-                .verifyAmountCoursesLocationDisplayed("Ukraine", 8) //check me for places search cities
-                .verifyAmountCoursesLocationDisplayed("Lviv", 0); // check for scenario
+                .clickByLocation() //visible for me
+                .verifyLocationUkraineMulti();
+
     }
 
 }
