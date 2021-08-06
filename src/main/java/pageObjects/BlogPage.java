@@ -1,6 +1,6 @@
 package pageObjects;
 
-import enums.BusinessConfigs;
+import enums.NameOfCoursesConfig;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 
@@ -16,8 +16,9 @@ public class BlogPage extends AbstractPage {
     private By listLinks = By.cssSelector("a.tab-nav__item.ng-scope");
 
     public By linkFromBlog(String nameLink) {
-         return By.xpath("//span[@class='ng-binding' and contains(text(),'" + nameLink + "')]");
+        return By.xpath("//span[@class='ng-binding' and contains(text(),'" + nameLink + "')]");
     }
+
     // click to TraninListPage
     public BlogPage clickBlogListButton() {
         // int tmp = getElements(blogListButton).size(); // for test
@@ -31,6 +32,16 @@ public class BlogPage extends AbstractPage {
         LOG.info(String.format("Expected link %s", link));
         Assert.assertEquals(isDisplayed(linkFromBlog(link)), true);
         LOG.info(String.format("is Enabled"));
+        return this;
+    }
+
+    public BlogPage verifyListEnumCoursesDisplayed() {
+              for(Enum enam: NameOfCoursesConfig.values()) {
+            String link = enam.toString();
+            LOG.info(String.format("Expected link %s", link));
+            Assert.assertEquals(isDisplayed(linkFromBlog(link)), true);
+            LOG.info(String.format("is Enabled"));
+        }
         return this;
     }
 

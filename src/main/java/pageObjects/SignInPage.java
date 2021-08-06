@@ -1,11 +1,9 @@
 package pageObjects;
 
-import enums.BusinessConfigs;
+import enums.LoginConfig;
 import org.openqa.selenium.By;
-import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import static org.testng.Assert.assertTrue;
@@ -92,7 +90,6 @@ public class SignInPage extends AbstractPage {
     }
 
 
-
     public HomePage SignIn(String email, String password) { //  for input email/password
 
         LOG.info("Mail was entered.");
@@ -105,14 +102,9 @@ public class SignInPage extends AbstractPage {
 
 
     public void verifySoftAssertContinueDisabled() {
-        ArrayList<String> listLogin = new ArrayList<>();
-        listLogin.add(BusinessConfigs.INCORRECTLOGIN1.getValue());
-        listLogin.add(BusinessConfigs.INCORRECTLOGIN2.getValue());
-        listLogin.add(BusinessConfigs.INCORRECTLOGIN3.getValue());
-        //listLogin.add(BusinessConfigs.CORRECTLOGIN.getValue()); //There is faild! for ShowTest
-        listLogin.add(BusinessConfigs.INCORRECTLOGIN4.getValue());
         SoftAssert soft = new SoftAssert(); //DONE! внутри верифая делать софт ассерт
-        for (String email : listLogin) {
+        for (Enum enam : LoginConfig.values()) {
+            String email = enam.toString();
             LOG.info(String.format("Mail %s expected", email));
             enterEmail(email);
             soft.assertTrue(isDisplayed(buttonContinueDisabled), "We musn't click!");
@@ -122,13 +114,8 @@ public class SignInPage extends AbstractPage {
     }
 
     public void verifyHardAssertContinueDisabled() {
-        ArrayList<String> listLogin = new ArrayList<>();
-        listLogin.add(BusinessConfigs.INCORRECTLOGIN1.getValue());
-        listLogin.add(BusinessConfigs.INCORRECTLOGIN2.getValue());
-        listLogin.add(BusinessConfigs.INCORRECTLOGIN3.getValue());
-        //listLogin.add(BusinessConfigs.CORRECTLOGIN.getValue()); //There is faild! for ShowTest
-        listLogin.add(BusinessConfigs.INCORRECTLOGIN4.getValue());
-        for (String email : listLogin) {
+        for (Enum enam : LoginConfig.values()) {
+            String email = enam.toString();
             LOG.info(String.format("Mail %s expected", email));
             enterEmail(email);
             assertTrue(isDisplayed(buttonContinueDisabled), "We musn't click!");

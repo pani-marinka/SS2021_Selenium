@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.logging.Logger;
 
 public class TrainingListPage extends AbstractPage {
@@ -49,7 +48,7 @@ public class TrainingListPage extends AbstractPage {
     }
 
     //assert for courses Java, Ruby
-    public TrainingListPage verifyCoursesJavaRuby(String courseName) {
+    public TrainingListPage verifyCoursesDisplay(String courseName) {
         ArrayList<WebElement> listCourses = (ArrayList<WebElement>) getElements(byAllDispleyedCourses);
         int tmp = listCourses.size();
         boolean isCourseName = false;
@@ -66,12 +65,12 @@ public class TrainingListPage extends AbstractPage {
     }
 
     //amount courses Ukr and Multi
-    public TrainingListPage verifyLocationUkraineMulti() {
+    public TrainingListPage verifyLocationUkraineMulti(String Country, String Multi) {
         ArrayList<WebElement> listLocations = (ArrayList<WebElement>) getElements(byLocationCountries());
         boolean isLocation = false;
         if (!listLocations.isEmpty()) {
             isLocation = listLocations.stream()
-                    .allMatch((i) -> i.getText().contains(BusinessConfigs.UKRAINE.getValue()) || i.getText().contains(BusinessConfigs.MULTILOCATION.getValue()));
+                    .allMatch((i) -> i.getText().contains(Country) || i.getText().contains(Multi));
         }
         LOG.info("is " + isLocation);
         Assert.assertTrue(isLocation, " It must true");

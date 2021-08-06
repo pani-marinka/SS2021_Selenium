@@ -35,9 +35,14 @@ public class DataProviderClass {
     @DataProvider(name = "numberOfCourses")
     public Object[][] getNumberOfCourses() {
         return new Object[][]{
-                { "Java" , "Ruby"}};
+                { "Java" }, {"Ruby"}};
     }
 
+    @DataProvider(name = "numberOfCourses2")
+    public Object[][] getNumberOfCourses2() {
+        return new Object[][]{
+                { "Java"} , {"Ruby"}};
+    }
 
 }
 

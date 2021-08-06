@@ -1,7 +1,7 @@
 package org.example;
 
 import dataProviderForTests.DataProviderClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pageObjects.HomePage;
 import pageObjects.SignInPage;
@@ -14,9 +14,9 @@ public class SignInPageTest extends BaseTest {
     private SignInPage signInPage;
 
 
-    @BeforeClass
+    @BeforeMethod
     public void getСreateObj() {
-        homePage = new HomePage();// DONE!  один объект
+        homePage = new HomePage();
         signInPage = new SignInPage();
 
 
