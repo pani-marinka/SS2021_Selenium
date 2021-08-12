@@ -55,3 +55,59 @@ It' mine%)
   //!DONE  Assert.assertEquals(amountGeneralCourses(byAmountCourses(courseName)));  // java + intership! //Ruby error message //в одному методі
 
       //"//label[normalize-space()='Java']/span"
+
+
+          @Test(description = "Verify ‘Trainings’ search works properly with searching in ‘Skills’: Java and Ruby",
+                  dataProvider = "numberOfCourses2", dataProviderClass = DataProviderClass.class)
+          public void searchTrainingJavaRuby2(String nameCourses) {
+              homePage
+                      .proceedToHomePage()
+                      .clickSignInButton()
+                      .SignIn(ConfProperties.getProperty("login"), ConfProperties.getProperty("passwordCorrect")); //DONE! -- логин та пароль в conf.propetis
+              trainingListPage
+                      .clickTrainingListButton()
+                      .clickClearLocation() //if visibility for me
+                      .clickSearchButton()
+                      .clickBySkills()
+                      .clickByCheckGeneralCourses(nameCourses)
+                      .clickSearchButton()
+                      .verifyCoursesJavaRuby(nameCourses);
+      //                .clickSearchButton()
+      //                .clickByCheckGeneralCourses(NameOfRuby);
+          }
+
+           //for example DataProvider
+              @Test(description = "Verify links on BlogPage",
+                      dataProvider = "linksFromBlog", dataProviderClass = DataProviderClass.class)
+              public void checkLinksBlog(String data) {
+                  trainingListPage
+                          .proceedToTrainingPage()
+                          .clickSignInButton();
+                  signInPage
+                          .SignIn(ConfProperties.getProperty("login"), ConfProperties.getProperty("passwordCorrect"));
+                  blogPage
+                          .clickBlogListButton()
+                          .verifyListLinksDisplayed(data);
+              }
+
+
+              REALSTORIES("REAL STORIES"),
+                  NEWS("NEWS"),
+                  MATERIALS("MATERIALS"),
+                  HARDSKILLS("HARD SKILLS"),
+                  SOFTSKILLS("SOFT SKILLS"),
+                  EVENTS("EVENTS"),
+                  JAVA("Java"),
+                  RUBY("Ruby");
+
+
+                  private NameOfCoursesConfig(String value) {
+                      this.value = value;
+                  }
+
+                  private String value;
+
+                  public String getValue() {
+                      return value;
+                  }
+              }

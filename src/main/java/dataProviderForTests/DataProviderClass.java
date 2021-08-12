@@ -3,7 +3,7 @@ package dataProviderForTests;
 import org.testng.annotations.DataProvider;
 
 public class DataProviderClass {
-
+//
     @DataProvider(name = "linksFromBlog")
     public Object[][] getLinksFromBlogPage() {
         return new Object[][]{

@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.internal.BaseTestMethod;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,6 +43,8 @@ public abstract class DriverFactory {
 
     public static WebDriver getWebDriver() {
      //if (webDriver== null) ?
+
+
         return webDriver;
     }
 
@@ -53,3 +56,4 @@ public abstract class DriverFactory {
         }
     }
 }
+//

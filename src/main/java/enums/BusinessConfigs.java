@@ -2,9 +2,8 @@ package enums;
 
 public enum BusinessConfigs {
     BASEURL("https://training.by/#!/Home?lang=en"),
-    TRAINLISTURL("https://training.by/#!/TrainingList?lang=en"),
-    UKRAINE("Ukraine"),
-    MULTILOCATION("Multi-location");
+    TRAINLISTURL("https://training.by/#!/TrainingList?lang=en");
+
 
 
     private BusinessConfigs(String value) {
@@ -17,3 +16,4 @@ public enum BusinessConfigs {
         return value;
     }
 }
+//

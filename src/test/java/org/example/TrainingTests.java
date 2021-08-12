@@ -3,6 +3,7 @@ package org.example;
 import confProperty.ConfProperties;
 import dataProviderForTests.DataProviderClass;
 import enums.BusinessConfigs;
+import enums.LocationConfigs;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pageObjects.BlogPage;
@@ -64,7 +65,7 @@ public class TrainingTests extends BaseTest {
                 .clickLocationUkraine()
                 .clickBycheckLviv()
                 .clickByLocation() //visible for me
-                .verifyLocationUkraineMulti(BusinessConfigs.UKRAINE.getValue(), BusinessConfigs.MULTILOCATION.getValue());
+                .verifyLocationUkraineMulti(LocationConfigs.UKRAINE.getValue(), LocationConfigs.MULTILOCATION.getValue());
 
     }
 
@@ -98,3 +99,4 @@ public class TrainingTests extends BaseTest {
 
     }
 }
+//

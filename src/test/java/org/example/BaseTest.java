@@ -1,5 +1,6 @@
 package org.example;
 
+import enums.DriverConfigs;
 import org.testng.annotations.*;
 import java.lang.reflect.Method;
 import static driver.DriverFactory.initDriver;
@@ -9,7 +10,7 @@ import static driver.DriverFactory.quitDriver;
 
 
 public abstract class BaseTest {
-    private Test test;
+   // private Test test;
 
 
     @Parameters({"browserName"})
@@ -26,3 +27,4 @@ public abstract class BaseTest {
         quitDriver();
     }
 }
+//

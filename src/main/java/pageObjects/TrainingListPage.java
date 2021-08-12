@@ -1,6 +1,7 @@
 package pageObjects;
 
 import enums.BusinessConfigs;
+import enums.LocationConfigs;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -27,7 +28,7 @@ public class TrainingListPage extends AbstractPage {
     public By byAllDispleyedCourses = By.xpath("//div[@class='training-list__container training-list__desktop']//div[@class='training-item__title ng-binding']");
     // all courses Ukr and Multi
     public By byLocationCountries() {
-        return By.xpath("//div[contains(@class,'training-list__container')]//*[self::div or self::span][contains(text(), '"+ BusinessConfigs.UKRAINE.getValue() +"') or contains(text(), '"+ BusinessConfigs.MULTILOCATION.getValue()+"')]");
+        return By.xpath("//div[contains(@class,'training-list__container')]//*[self::div or self::span][contains(text(), '"+ LocationConfigs.UKRAINE.getValue() +"') or contains(text(), '"+ LocationConfigs.MULTILOCATION.getValue()+"')]");
     }
     // определение локатора кнопки входа в аккаунт
     // defining the locator of the login button
@@ -126,3 +127,4 @@ public class TrainingListPage extends AbstractPage {
 
 
 }
+//

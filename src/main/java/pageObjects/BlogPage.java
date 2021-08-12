@@ -1,5 +1,6 @@
 package pageObjects;
 
+
 import enums.NameOfCoursesConfig;
 import org.openqa.selenium.By;
 import org.testng.Assert;
@@ -47,3 +48,4 @@ public class BlogPage extends AbstractPage {
 
 
 }
+//
